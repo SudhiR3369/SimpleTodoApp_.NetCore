@@ -1,7 +1,9 @@
 ﻿using LibraryData;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace TodoServices
 {
@@ -18,10 +20,18 @@ namespace TodoServices
             return _context.TodoTasks.ToList();
         }
 
-        public void AddTask(TodoTask newTask)
+        public async Task<object> AddTask(TodoTask newTask)
         {
-            _context.Add(newTask);
-            _context.SaveChanges();
+            try
+            {
+                await _context.AddAsync(newTask);                
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return new { status = true };
         }
 
         public void UpdateTask(TodoTask newTask)
