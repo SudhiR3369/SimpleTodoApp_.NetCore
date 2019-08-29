@@ -3,6 +3,7 @@ using LibraryData;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Bivek_SImpleToDoApp.Controllers
 {
@@ -38,7 +39,7 @@ namespace Bivek_SImpleToDoApp.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(TodoTaskViewModel taskVM)
+        public async Task<IActionResult> Create(TodoTaskViewModel taskVM)
         {
             if (ModelState.IsValid)
             {
@@ -49,7 +50,7 @@ namespace Bivek_SImpleToDoApp.Controllers
                     Description = taskVM.Description,
                     TaskDate = TaskDate
                 };
-                _tasks.AddTask(taskModel);
+               var result = await _tasks.AddTask(taskModel);
                 return RedirectToAction("Index");
             }
             else
